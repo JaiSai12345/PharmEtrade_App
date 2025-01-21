@@ -63,5 +63,5 @@ jobs:
           password: ${{ secrets.GMAIL_PASSWORD }}  # Gmail password or app-specific password
           subject: "GitHub Actions: Docker Image Pushed to AWS ECR"
           body: "The Docker image has been successfully pushed to AWS ECR."
-          to: "sainath.mandala@gmail.com"  # Recipient's email address
+          to: "sainath.mandala@gmail.com,nagelijaisai@gmail.com"  # Recipient's email address
           from: ${{ secrets.GMAIL_USERNAME }}  # Sender's email address (same as Gmail username)
