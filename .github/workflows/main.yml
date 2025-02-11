@@ -69,5 +69,5 @@ jobs:
           password: ${{ secrets.GMAIL_PASSWORD }}
           subject: "GitHub Actions: Docker Images Pushed to AWS ECR"
           body: "The Docker images have been successfully pushed to AWS ECR."
-          to: "saikarthik261@gmail.com,praneethssr.2002@mail.com,nagelijaisai@gmail.com"
+          to: "nagelijaisai@gmail.com"
           from: ${{ secrets.GMAIL_USERNAME }}
