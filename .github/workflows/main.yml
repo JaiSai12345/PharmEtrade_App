@@ -26,19 +26,35 @@ jobs:
         run: |
           aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
 
-      - name: Pull DockerHub Image
+      # Step to pull, tag, and push first Docker image
+      - name: Pull DockerHub Image 1
         run: |
-          docker pull ${{ secrets.DOCKERHUB_IMAGE }}
+          docker pull ${{ secrets.DOCKERHUB_IMAGE_1 }}
 
-      - name: Tag Image for ECR
+      - name: Tag Image 1 for ECR
         run: |
-          IMAGE_NAME=$(echo "${{ secrets.DOCKERHUB_IMAGE }}" | cut -d':' -f1 | cut -d'/' -f2)
-          docker tag ${{ secrets.DOCKERHUB_IMAGE }} ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:$IMAGE_NAME-latest
+          IMAGE_NAME_1=$(echo "${{ secrets.DOCKERHUB_IMAGE_1 }}" | cut -d':' -f1 | cut -d'/' -f2)
+          docker tag ${{ secrets.DOCKERHUB_IMAGE_1 }} ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:$IMAGE_NAME_1-latest
 
-      - name: Push Image to ECR
+      - name: Push Image 1 to ECR
         run: |
-          IMAGE_NAME=$(echo "${{ secrets.DOCKERHUB_IMAGE }}" | cut -d':' -f1 | cut -d'/' -f2)
-          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:$IMAGE_NAME-latest
+          IMAGE_NAME_1=$(echo "${{ secrets.DOCKERHUB_IMAGE_1 }}" | cut -d':' -f1 | cut -d'/' -f2)
+          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:$IMAGE_NAME_1-latest
+
+      # Step to pull, tag, and push second Docker image
+      - name: Pull DockerHub Image 2
+        run: |
+          docker pull ${{ secrets.DOCKERHUB_IMAGE_2 }}
+
+      - name: Tag Image 2 for ECR
+        run: |
+          IMAGE_NAME_2=$(echo "${{ secrets.DOCKERHUB_IMAGE_2 }}" | cut -d':' -f1 | cut -d'/' -f2)
+          docker tag ${{ secrets.DOCKERHUB_IMAGE_2 }} ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:$IMAGE_NAME_2-latest
+
+      - name: Push Image 2 to ECR
+        run: |
+          IMAGE_NAME_2=$(echo "${{ secrets.DOCKERHUB_IMAGE_2 }}" | cut -d':' -f1 | cut -d'/' -f2)
+          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:$IMAGE_NAME_2-latest
 
   notify:
     needs: push_to_ecr
@@ -51,7 +67,7 @@ jobs:
           server_port: 587
           username: ${{ secrets.GMAIL_USERNAME }}
           password: ${{ secrets.GMAIL_PASSWORD }}
-          subject: "GitHub Actions: Docker Image Pushed to AWS ECR"
-          body: "The Docker image has been successfully pushed to AWS ECR."
+          subject: "GitHub Actions: Docker Images Pushed to AWS ECR"
+          body: "The Docker images have been successfully pushed to AWS ECR."
           to: "saikarthik261@gmail.com,praneethssr.2002@mail.com,nagelijaisai@gmail.com"
           from: ${{ secrets.GMAIL_USERNAME }}
