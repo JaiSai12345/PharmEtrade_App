@@ -1,0 +1,4 @@
+<<<<<<< HEAD
+Hi this is the master branch inside the f1.txt file
+
+=======
